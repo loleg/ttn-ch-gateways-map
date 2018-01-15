@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>ttn-zurich</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css" />
+<style>.leaflet-container-default {min-height: 450px;}</style>
+<style>body { padding: 0; margin: 0; } html, body, #map { height: 100vh; width: 100vw; }</style>
+
+</head>
+<body>
+
+ <div id="gateway_map" class="leaflet-container-default"></div>
+
+
+<script type="text/javascript">
+(function () {
+//var OpenStreetMap_Default = '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+//var OpenStreetMap_BlackAndWhite = '//{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png';
+//var OpenStreetMap_Attribution = "\u00a9 <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors";
+//var OpenTopoMap = 'http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
+//var OpenTopoMap_Attribution = 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)';
+var MapTiles = '//stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.png';
+var MapAttribution = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+
+    function loadmap() {
+        var djoptions = {"srid": null, "extent": [[44, 4], [48, 11]], "fitextent": true, "center": null, "zoom": null, "minzoom": 2, "maxzoom": 12, "layers": [["OSM", MapTiles, MapAttribution]], "overlays": [], "attributionprefix": null, "scale": "both", "minimap": false, "resetview": false, "tilesextent": []},
+            options = {djoptions: djoptions, initfunc: loadmap,
+                       globals: false, callback: null};
+        window._map = L.Map.djangoMap('gateway_map', options);
+        window._map.fitBounds([[46.5, 5], [48, 10]]);
+
+	var OpenWeatherMap_Clouds = L.tileLayer('//{s}.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: 'Map data &copy; <a href="http://openweathermap.org">OpenWeatherMap</a>',
+		opacity: 0.5
+	});
+    }
+    var loadevents = ["load"];
+    if (loadevents.length === 0) loadmap();
+    else if (window.addEventListener) for (var i=0; i<loadevents.length; i++) window.addEventListener(loadevents[i], loadmap, false);
+    else if (window.jQuery) jQuery(window).on(loadevents.join(' '), loadmap);
+    
+})();
+</script>
+
+    <!-- map -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js" type="text/javascript"></script>
+
+    
+        <script src="ttn/map_icon.js" type="text/javascript"></script>
+<script src="dist/PruneCluster.js" type="text/javascript"></script>
+<script src="dist/leaflet.extras.js" type="text/javascript"></script>
+<script type="text/javascript">
+    window._path_icon_community = "ttn/community.svg";
+    window._path_icon_gateway = "ttn/gateway.svg";
+    window._path_icon_gateway_planned = "ttn/gateway_planned.svg";
+    window._path_icon_gateway_offline = "ttn/gateway_offline.svg";
+</script>
+    <script src="ttn/gateway_map.js"></script>
+    <script type="text/javascript">
+        window._target_gateway = "28502"
+        window._gateways_list_url = "gateways_ch.json";
+    </script>
+</body>
+</html>
